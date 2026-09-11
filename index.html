@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#051a35" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='24' font-size='24'>🏆</text></svg>" />
+    <title>Te Encontro no Pódio</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="race" id="raceExperience">
+      <picture>
+        <source
+          media="(min-width: 900px)"
+          srcset="assets/cockpit-storm-desktop.png" />
+        <img
+          src="assets/cockpit-storm.png"
+          class="track-image"
+          alt="Visão do cockpit em uma pista de corrida com o semáforo de largada" />
+      </picture>
+      <div class="reading-overlay" aria-hidden="true"></div>
+      <button
+        class="audio-toggle"
+        id="audioToggle"
+        type="button"
+        aria-pressed="false">
+        🔇
+      </button>
+
+      <section class="intro" aria-live="polite">
+        <h1>TE ENCONTRO<br />NO PÓDIO</h1>
+        <p id="status">No grid. A largada começa em instantes.</p>
+      </section>
+
+      <section class="lights" aria-label="Luzes de largada">
+        <span class="light"></span><span class="light"></span
+        ><span class="light"></span><span class="light"></span
+        ><span class="light"></span>
+      </section>
+
+      <section
+        class="false-start-panel panel"
+        id="falseStartPanel"
+        hidden
+        aria-live="assertive">
+        <p class="panel-kicker">ERRO DE LARGADA</p>
+        <h2>🚨 Falsa largada!</h2>
+        <p>Você saiu antes das luzes apagarem.</p>
+        <button class="primary-button" id="restartButton" type="button">
+          Tentar novamente
+        </button>
+      </section>
+
+      <section
+        class="result-screen panel"
+        id="resultScreen"
+        hidden
+        aria-live="polite">
+        <p class="panel-kicker">CLASSIFICAÇÃO STORM</p>
+        <h2>Seu tempo de reação</h2>
+        <p class="result-time" id="resultTime">0.000s</p>
+        <p class="result-copy">Você está pronto para a corrida.</p>
+        <div class="result-actions">
+          <button class="primary-button" id="saveResultButton" type="button">
+            Salvar meu resultado
+          </button>
+          <button class="secondary-button" id="continueButton" type="button">
+            Continuar
+          </button>
+        </div>
+      </section>
+
+      <section
+        class="narrative-screen quiz-intro-screen"
+        id="narrativeScreen"
+        hidden>
+        <div class="quiz-intro-copy">
+          <p>Mas uma corrida não é feita apenas de velocidade...</p>
+          <h2>QUAL EQUIPE É A SUA?</h2>
+          <p class="quiz-subtitle">
+            Na pista, cada piloto escolhe onde quer estar.
+          </p>
+          <p class="versus">SCUDERIA STORM <span>×</span> FERZAN RACING</p>
+          <button class="primary-button" id="openQuizButton" type="button">
+            Começar a descoberta
+          </button>
+        </div>
+      </section>
+
+      <section class="quiz-screen" id="quizScreen" hidden aria-live="polite">
+        <header class="quiz-hud">
+          <span id="questionNumber">01 / 05</span>
+          <div class="quiz-progress" aria-hidden="true">
+            <i id="progressBar"></i>
+          </div>
+          <span>STORM × FERZAN</span>
+        </header>
+        <div class="quiz-grid-markings" aria-hidden="true">
+          <span>INTERLAGOS</span><span>SECTOR 01</span>
+        </div>
+        <article class="quiz-question-wrap" id="quizQuestionWrap">
+          <p class="panel-kicker" id="questionKicker">PERGUNTA 01</p>
+          <h2 id="quizQuestion"></h2>
+          <div class="quiz-options" id="quizOptions"></div>
+        </article>
+      </section>
+
+      <section
+        class="team-result-screen"
+        id="teamResultScreen"
+        hidden
+        aria-live="polite">
+        <div class="team-result-copy">
+          <p class="panel-kicker">SEU LUGAR ESTÁ NA PISTA.</p>
+          <p class="team-reveal-label">VOCÊ É</p>
+          <h2 id="teamResultName"></h2>
+          <p id="teamResultDescription"></p>
+          <button
+            class="download-team-result"
+            id="downloadTeamResult"
+            type="button">
+            🏁 BAIXAR MEU RESULTADO
+          </button>
+
+          <button
+            class="share-result-button"
+            id="shareResultButton"
+            type="button">
+            📲 COMPARTILHAR MEU RESULTADO
+          </button>
+          <button class="secondary-button" id="restartQuizButton" type="button">
+            Refazer descoberta
+          </button>
+        </div>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
