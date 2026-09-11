@@ -591,25 +591,22 @@ button {
   }
 }
 .download-team-result {
-  display: block;
-  width: min(100%, 360px);
-  margin: 30px auto 0;
-  padding: 16px 20px;
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 999px;
-  color: #06162f;
-  background: #fff;
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.24);
-  font-size: 13px;
-  letter-spacing: 0.08em;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  padding: 15px 18px;
+  color: #041328;
+  background: linear-gradient(135deg, #ffffff, #75cbff);
+  font: inherit;
+  font-weight: 900;
   cursor: pointer;
-  opacity: 0;
-  transform: translateY(12px);
-  pointer-events: none;
+  box-shadow: 0 0 28px rgba(104, 202, 255, 0.38);
   transition:
-    opacity 0.45s ease,
-    transform 0.45s ease,
-    box-shadow 0.2s ease;
+    transform 0.25s ease,
+    filter 0.25s ease,
+    box-shadow 0.25s ease;
+    margin-top: 10px;
 }
 .team-result-screen.show-download .download-team-result {
   opacity: 1;
@@ -671,7 +668,7 @@ button {
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 12px;
-  padding: 15px 18px;
+  padding: 15px 4px;
   color: #041328;
   background: linear-gradient(135deg, #ffffff, #75cbff);
   font: inherit;
@@ -682,6 +679,7 @@ button {
     transform 0.25s ease,
     filter 0.25s ease,
     box-shadow 0.25s ease;
+    margin-top: 10px;
 }
 
 .share-result-button::after {
