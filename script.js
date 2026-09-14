@@ -299,16 +299,24 @@ class TeamQuiz {
             "FERZAN RACING",
             "Você é movido por intensidade, instinto e pela coragem de acelerar quando todos preferem frear.",
           ];
+
     quizScreen.hidden = true;
-    teamResultName.textContent = content[0];
-    teamResultDescription.textContent = content[1];
-    teamResultScreen.className = `team-result-screen ${team}`;
-    teamResultScreen.dataset.resultImage = `assets/${team === "storm" ? "storm-result.jpg" : "ferzan-result.jpg"}`;
-    teamResultScreen.hidden = false;
-    window.setTimeout(
-      () => teamResultScreen.classList.add("show-download"),
-      1350,
-    );
+    teamResultScreen.hidden = true;
+    teamLoading.hidden = false;
+
+    window.setTimeout(() => {
+      teamLoading.hidden = true;
+      teamResultName.textContent = content[0];
+      teamResultDescription.textContent = content[1];
+      teamResultScreen.className = `team-result-screen ${team}`;
+      teamResultScreen.dataset.resultImage = `assets/${team === "storm" ? "storm-result.jpg" : "ferzan-result.jpg"}`;
+      teamResultScreen.hidden = false;
+
+      window.setTimeout(
+        () => teamResultScreen.classList.add("show-download"),
+        150,
+      );
+    }, 2000);
   }
 }
 
