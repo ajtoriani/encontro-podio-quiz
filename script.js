@@ -303,7 +303,7 @@ class TeamQuiz {
     teamResultName.textContent = content[0];
     teamResultDescription.textContent = content[1];
     teamResultScreen.className = `team-result-screen ${team}`;
-    teamResultScreen.dataset.resultImage = `assets/${team === "storm" ? "storm-result.png" : "ferzan-result.png"}`;
+    teamResultScreen.dataset.resultImage = `assets/${team === "storm" ? "storm-result.jpg" : "ferzan-result.jpg"}`;
     teamResultScreen.hidden = false;
     window.setTimeout(
       () => teamResultScreen.classList.add("show-download"),
@@ -484,16 +484,37 @@ document.querySelector("#restartQuizButton").addEventListener("click", () => {
   quiz.start();
 });
 
-downloadTeamResult.addEventListener("click", () => {
+downloadTeamResult?.addEventListener("click", async () => {
   const source = teamResultScreen.dataset.resultImage;
   if (!source) return;
 
-  const link = document.createElement("a");
-  link.href = source;
-  link.download = source.split("/").pop();
-  document.body.append(link);
-  link.click();
-  link.remove();
+  const button = downloadTeamResult;
+  const originalText = button.textContent;
+  button.disabled = true;
+  button.textContent = "PREPARANDO...";
+
+  try {
+    const response = await fetch(source);
+    if (!response.ok) throw new Error("Não foi possível carregar a imagem.");
+
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = source.split("/").pop() || "resultado-equipe.png";
+    document.body.append(link);
+    link.click();
+    link.remove();
+
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch (error) {
+    // Fallback para celulares que não permitem download direto.
+    window.open(source, "_blank", "noopener,noreferrer");
+  } finally {
+    button.disabled = false;
+    button.textContent = originalText;
+  }
 });
 
 shareResultButton?.addEventListener("click", async () => {
