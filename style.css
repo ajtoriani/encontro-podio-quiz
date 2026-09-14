@@ -606,7 +606,7 @@ button {
     transform 0.25s ease,
     filter 0.25s ease,
     box-shadow 0.25s ease;
-    margin-top: 10px;
+  margin-top: 10px;
 }
 .team-result-screen.show-download .download-team-result {
   opacity: 1;
@@ -637,7 +637,6 @@ button {
     transition-duration: 0.01ms !important;
   }
 }
-
 
 @media (min-width: 900px) {
   .result-screen {
@@ -679,7 +678,7 @@ button {
     transform 0.25s ease,
     filter 0.25s ease,
     box-shadow 0.25s ease;
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .share-result-button::after {
@@ -723,5 +722,31 @@ button {
 @media (prefers-reduced-motion: reduce) {
   .share-result-button::after {
     animation: none;
+  }
+}
+
+.launch-button {
+  position: fixed;
+  z-index: 6;
+  left: 50%;
+  bottom: clamp(42px, 9vh, 100px);
+  min-width: 180px;
+  transform: translateX(-50%);
+}
+
+.launch-button:hover,
+.launch-button:focus-visible {
+  transform: translate(-50%, -2px);
+}
+
+.launch-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: saturate(0.5);
+}
+
+@media (min-width: 900px) {
+  .launch-button {
+    bottom: clamp(42px, 11vh, 115px);
   }
 }

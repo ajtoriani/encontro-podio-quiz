@@ -2,6 +2,7 @@ const image = document.querySelector(".track-image");
 const race = document.querySelector("#raceExperience");
 const lights = [...document.querySelectorAll(".light")];
 const status = document.querySelector("#status");
+const launchButton = document.querySelector("#launchButton");
 const falseStartPanel = document.querySelector("#falseStartPanel");
 const resultScreen = document.querySelector("#resultScreen");
 const narrativeScreen = document.querySelector("#narrativeScreen");
@@ -318,9 +319,23 @@ class RaceController {
     this.onResult = onResult;
     this.state = RaceState.IDLE;
     this.timeouts = [];
+    this.updateLaunchButton();
   }
+
+  updateLaunchButton() {
+    if (!launchButton) return;
+
+    const canLaunch = this.state === RaceState.READY;
+
+    launchButton.disabled = !canLaunch;
+    launchButton.hidden = this.state === RaceState.FINISHED;
+    launchButton.setAttribute("aria-disabled", String(!canLaunch));
+  }
+
   setState(state) {
     this.state = state;
+    this.updateLaunchButton();
+
     race.classList.toggle(
       "is-countdown",
       state === RaceState.COUNTDOWN || state === RaceState.WAITING,
@@ -392,6 +407,7 @@ class RaceController {
     this.clearSchedule();
     lights.forEach((light) => light.classList.remove("active"));
     falseStartPanel.hidden = true;
+    launchButton.hidden = false;
     race.classList.remove("is-result");
     this.setState(RaceState.IDLE);
     status.textContent = "De volta ao grid. Prepare-se.";
@@ -432,10 +448,6 @@ const raceController = new RaceController({
   },
 });
 
-document.addEventListener("pointerdown", (event) => {
-  if (event.target.closest("button, .panel")) return;
-  raceController.handlePress();
-});
 audioToggle.addEventListener("click", async () => {
   const enabled = await audio.toggle();
   if (enabled) {
@@ -465,6 +477,13 @@ document.querySelector("#openQuizButton").addEventListener("click", () => {
   narrativeScreen.hidden = true;
   quiz.start();
 });
+
+document.querySelector("#restartQuizButton").addEventListener("click", () => {
+  teamResultScreen.hidden = true;
+  teamResultScreen.classList.remove("show-download");
+  quiz.start();
+});
+
 downloadTeamResult.addEventListener("click", () => {
   const source = teamResultScreen.dataset.resultImage;
   if (!source) return;
@@ -544,3 +563,7 @@ image.addEventListener("load", alignLights);
 window.addEventListener("resize", alignLights);
 if (image.complete) alignLights();
 window.setTimeout(() => raceController.beginCountdown(), 1300);
+launchButton?.addEventListener("click", () => {
+  launchButton.hidden = true;
+  raceController.handlePress();
+});
