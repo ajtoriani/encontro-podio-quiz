@@ -325,11 +325,14 @@ class RaceController {
   updateLaunchButton() {
     if (!launchButton) return;
 
-    const canLaunch = this.state === RaceState.READY;
+    const canPress =
+      this.state === RaceState.COUNTDOWN ||
+      this.state === RaceState.WAITING ||
+      this.state === RaceState.READY;
 
-    launchButton.disabled = !canLaunch;
+    launchButton.disabled = !canPress;
     launchButton.hidden = this.state === RaceState.FINISHED;
-    launchButton.setAttribute("aria-disabled", String(!canLaunch));
+    launchButton.setAttribute("aria-disabled", String(!canPress));
   }
 
   setState(state) {
@@ -385,8 +388,18 @@ class RaceController {
   }
   handlePress() {
     this.audio.unlock();
-    if (this.state === RaceState.WAITING) this.falseStart();
-    if (this.state === RaceState.READY) this.finish();
+
+    if (
+      this.state === RaceState.COUNTDOWN ||
+      this.state === RaceState.WAITING
+    ) {
+      this.falseStart();
+      return;
+    }
+
+    if (this.state === RaceState.READY) {
+      this.finish();
+    }
   }
   falseStart() {
     this.clearSchedule();

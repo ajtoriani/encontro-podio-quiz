@@ -228,6 +228,7 @@ button {
     filter 0.18s ease;
 }
 .primary-button {
+  margin-top: 30px;
   color: #00152e;
   background: #fff;
   font-weight: 800;
