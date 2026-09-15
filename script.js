@@ -367,7 +367,7 @@ class TeamQuiz {
 
       teamResultScreen.className = `team-result-screen ${team}`;
       teamResultScreen.dataset.resultImage =
-        `assets/${team === "storm" ? "storm-result.png" : "ferzan-result.png"}`;
+        `assets/${team === "storm" ? "storm-result.jpg" : "ferzan-result.jpg"}`;
 
       teamResultScreen.hidden = false;
 
