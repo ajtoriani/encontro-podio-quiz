@@ -210,85 +210,141 @@ class TeamQuiz {
     this.scores = { storm: 0, ferzan: 0 };
     this.questions = [
       {
-        question: "Quando tudo está contra você, o que te faz continuar?",
+        question: "Diante de um problema, você…",
         options: [
-          ["A promessa de que a precisão muda qualquer corrida.", "storm"],
-          ["A vontade de virar o jogo quando ninguém espera.", "ferzan"],
+          ["Enfrenta.", "storm"],
+          ["Planeja.", "ferzan"],
+          ["Arrisca.", "storm"],
+          ["Calcula.", "ferzan"],
         ],
       },
       {
-        question: "Sob pressão, qual é o seu primeiro instinto?",
+        question: "Escolha o seu GP.",
         options: [
-          ["Ler o cenário e encontrar a linha mais inteligente.", "storm"],
-          ["Confiar na coragem e atacar a oportunidade.", "ferzan"],
+          ["Monza", "ferzan"],
+          ["Mônaco", "ferzan"],
+          ["São Paulo", "storm"],
+          ["Silverstone", "storm"],
         ],
       },
       {
-        question: "O que uma parceria inesquecível desperta em você?",
+        question: "No amor, você prefere…",
         options: [
-          ["Lealdade silenciosa, construída em cada detalhe.", "storm"],
-          ["Uma chama intensa que não aceita ficar pequena.", "ferzan"],
+          ["Intensidade.", "storm"],
+          ["Segurança.", "ferzan"],
+          ["Aventura.", "storm"],
+          ["Estabilidade.", "ferzan"],
         ],
       },
       {
-        question: "Se a pista muda de repente, como você responde?",
+        question: "Como você faz seu macarrão?",
         options: [
-          ["Ajusto a estratégia antes que os outros percebam.", "storm"],
-          ["Transformo o imprevisto no meu melhor movimento.", "ferzan"],
+          ["Quebra e joga na panela", "storm"],
+          ["Ajeita delicadamente e espera", "ferzan"],
+          ["Miojo conta como macarrão, né?", "storm"],
+          ["Massa fresca", "ferzan"],
         ],
       },
       {
-        question: "No fim, o que define a sua vitória?",
+        question: "Quando duvidam de você…",
         options: [
-          ["Chegar longe sem perder quem sou pelo caminho.", "storm"],
-          ["Deixar uma marca impossível de ignorar.", "ferzan"],
+          ["Provo que consigo.", "storm"],
+          ["Sigo em silêncio.", "ferzan"],
+          ["Uso como combustível.", "storm"],
+          ["Foco no objetivo.", "ferzan"],
+        ],
+      },
+      {
+        question: "Escolha seu companheiro de equipe perfeito.",
+        options: [
+          ["Irmãos de outra mãe", "storm"],
+          ["Rivalidade alta", "ferzan"],
+          ["Melhor do que amigos, BFF", "storm"],
+          ["Só deixo passar se for pela brita", "ferzan"],
+        ],
+      },
+      {
+        question: "Seu maior defeito seria…",
+        options: [
+          ["Impulsividade.", "storm"],
+          ["Orgulho.", "ferzan"],
+          ["Teimosia.", "storm"],
+          ["Controle.", "ferzan"],
         ],
       },
     ];
   }
+
   start() {
     this.index = 0;
     this.scores = { storm: 0, ferzan: 0 };
+
     quizScreen.hidden = false;
+    teamLoading.hidden = true;
     teamResultScreen.hidden = true;
+    teamResultScreen.classList.remove("show-download");
+
     this.render();
   }
+
   render() {
     const current = this.questions[this.index];
     const position = String(this.index + 1).padStart(2, "0");
-    questionNumber.textContent = `${position} / ${String(this.questions.length).padStart(2, "0")}`;
+    const total = String(this.questions.length).padStart(2, "0");
+
+    questionNumber.textContent = `${position} / ${total}`;
     questionKicker.textContent = `PERGUNTA ${position}`;
     progressBar.style.width = `${((this.index + 1) / this.questions.length) * 100}%`;
     quizQuestion.textContent = current.question;
+
     quizOptions.replaceChildren(
-      ...current.options.map(([label, team]) => {
+      ...current.options.map(([label, team], optionIndex) => {
         const button = document.createElement("button");
+
         button.type = "button";
         button.className = "quiz-option";
-        button.textContent = label;
-        button.addEventListener("click", () => this.answer(team, button));
+        button.innerHTML = `
+          <span class="quiz-option-letter">${String.fromCharCode(65 + optionIndex)}</span>
+          <span>${label}</span>
+        `;
+
+        button.addEventListener("click", () => {
+          this.answer(team, button);
+        });
+
         return button;
       }),
     );
   }
+
   answer(team, button) {
-    if (quizOptions.dataset.locked) return;
+    if (quizOptions.dataset.locked === "true") return;
+
     quizOptions.dataset.locked = "true";
     button.classList.add("selected");
     this.scores[team] += 1;
+
     window.setTimeout(() => {
       this.index += 1;
       quizOptions.dataset.locked = "";
-      quizQuestionWrap.classList.remove("is-changing");
-      if (this.index === this.questions.length) this.reveal();
-      else {
-        quizQuestionWrap.classList.add("is-changing");
-        window.setTimeout(() => this.render(), 130);
+
+      if (this.index === this.questions.length) {
+        this.reveal();
+        return;
       }
+
+      quizQuestionWrap.classList.add("is-changing");
+
+      window.setTimeout(() => {
+        this.render();
+        quizQuestionWrap.classList.remove("is-changing");
+      }, 130);
     }, 430);
   }
+
   reveal() {
-    const team = this.scores.storm >= this.scores.ferzan ? "storm" : "ferzan";
+    const team = this.scores.storm > this.scores.ferzan ? "storm" : "ferzan";
+
     const content =
       team === "storm"
         ? [
@@ -308,8 +364,11 @@ class TeamQuiz {
       teamLoading.hidden = true;
       teamResultName.textContent = content[0];
       teamResultDescription.textContent = content[1];
+
       teamResultScreen.className = `team-result-screen ${team}`;
-      teamResultScreen.dataset.resultImage = `assets/${team === "storm" ? "storm-result.jpg" : "ferzan-result.jpg"}`;
+      teamResultScreen.dataset.resultImage =
+        `assets/${team === "storm" ? "storm-result.png" : "ferzan-result.png"}`;
+
       teamResultScreen.hidden = false;
 
       window.setTimeout(
@@ -500,6 +559,7 @@ document.querySelector("#openQuizButton").addEventListener("click", () => {
 });
 
 document.querySelector("#restartQuizButton").addEventListener("click", () => {
+  teamLoading.hidden = true;
   teamResultScreen.hidden = true;
   teamResultScreen.classList.remove("show-download");
   quiz.start();

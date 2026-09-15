@@ -796,3 +796,35 @@ button {
     transform: rotate(360deg);
   }
 }
+
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.quiz-option-letter {
+  display: grid;
+  flex: 0 0 30px;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(137, 212, 255, 0.65);
+  border-radius: 50%;
+  color: #89d4ff;
+  font-size: 13px;
+}
+
+.quiz-option.selected .quiz-option-letter {
+  color: #041328;
+  background: #fff;
+  border-color: #fff;
+}
+
+@media (max-width: 600px) {
+  .quiz-option {
+    min-height: 68px;
+    gap: 12px;
+  }
+}
